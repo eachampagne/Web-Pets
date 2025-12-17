@@ -10,6 +10,7 @@ passport.use(new GoogleStrategy({
   scope: ['profile']
 },
   function verify(issuer, profile, cb) {
+    console.log('inside verify function');
     db.Credential.find({provider: issuer, subject: profile.id})
       .then((credentials) => {
         if(!credentials.length){
@@ -59,8 +60,19 @@ router.get('/', (req, res) => { // add 'next' here if needed
   res.send('send login');
 });
 
+//with /login/
 router.get('/federated/google', passport.authenticate('google'));
 // router.get('/federated/google', (req, res) => {
 //   res.send('routing is working');
 // });
+
+router.get('/redirect/google', passport.authenticate('google', {
+  successRedirect: '/',
+  failureRedirect: '/login'
+}));
+
+// router.get('/redirect/google', (req, res) => {
+//   res.send('google redirect');
+// });
+
 module.exports = router;
