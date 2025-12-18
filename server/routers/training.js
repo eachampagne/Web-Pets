@@ -2,8 +2,16 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/test', (req, res) => {
-  res.status(200).send('router working');
+router.get('/', (req, res) => {
+  res.send('ultimately, this should return all of the pet\'s skill levels');
+});
+
+router.get('/:id', (req, res) => {
+  res.send('get id');
+});
+
+router.patch('/:id', (req, res)=> {
+  res.send('patch id');
 });
 
 module.exports = router;
