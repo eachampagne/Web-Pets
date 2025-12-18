@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oidc');
 const db = require('../db');
+const trainingRouter = require('./training');
 
 passport.use(new GoogleStrategy({
   clientID: process.env['GOOGLE_CLIENT_ID'],
@@ -89,5 +90,7 @@ router.post('/logout', function(req, res, next) {
     });
   });
 });
+
+router.use('/training', trainingRouter);
 
 module.exports = router;
