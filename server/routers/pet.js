@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../db');
 const skills = require('../data/skills.js');
 
+
 router.get('/', (req, res) => {
   // if user is signed in - we check the session to see if the passport exist
   const { passport } = req.session;
@@ -51,4 +52,15 @@ router.post('/', (req, res) => {
   }
 });
 
+router.patch('/', (req, res) => {
+  db.Pet.find({userId: passport.user.id})
+    .then((pet) => {
+      // change the petName to the req.body.petName
+      
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(404);
+    });
+});
 module.exports = router;
