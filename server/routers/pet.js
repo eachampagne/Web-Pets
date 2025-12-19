@@ -57,24 +57,32 @@ router.post('/', (req, res) => {
         res.sendStatus(500);
       });
   } else {
-    res.redirect("/login");
+    res.redirect('/login');
   }
 });
 
 router.patch('/', (req, res) => {
-  db.Pet.find({ userId: passport.user.id })
+  const { passport } = req.session;
+  if(passport){
+    db.Pet.findOneAndUpdate({ userId: passport.user.id }, {petName: req.body.petName}, {new: true})
     .then((pet) => {
       // change the petName to the req.body.petName
+      res.status(200).send(pet);
     })
     .catch((err) => {
       console.error(err);
       res.sendStatus(404);
     });
+  } else {
+    res.redirect('/login');
+  }
 });
 
 // delete
 router.delete('/', (req, res) => {
-  db.Pet.findByIdAndDelete({ userId: passport.user.id })
+  const { passport } = req.session;
+  if(passport){
+    db.Pet.findByIdAndDelete({ userId: passport.user.id })
     .then(() => {
       res.sendStatus(200);
     })
@@ -82,5 +90,8 @@ router.delete('/', (req, res) => {
       console.error('This pet does not exist', err);
       res.sendStatus(404);
     });
+  } else {
+    res.redirect('/login');
+  }
 });
 module.exports = router;
