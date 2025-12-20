@@ -7,7 +7,8 @@ const DashboardView = (props) => {
   const [ tab, setTab ] = useState('Skills');
 
 
-  const { skillData } = props;
+  const { skillData, user } = props;
+  console.log(skillData);
   const tabs = ['Statuses', 'Interactions', 'Skills'];
 
   const renderTab = () => {
@@ -27,8 +28,8 @@ const DashboardView = (props) => {
     setTab(event.target.name);
   };
 
-  return (
-
+  // TODO: display "off" dashboard when logged out instead of displaying nothing
+  return user.name ? (
     <div style={{ border: '1px solid black', marginTop: '5px' }}>
       <p>
         folder thing goes here
@@ -41,7 +42,7 @@ const DashboardView = (props) => {
       {renderTab()}
     </div>
       // <Statuses /> or <Interactions /> or <Skills /> depending on state view
-  );
+  ) : null;
 };
 
 export default DashboardView;

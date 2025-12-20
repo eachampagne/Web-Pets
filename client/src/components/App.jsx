@@ -36,7 +36,7 @@ const App = () => {
         <h1>Sign in</h1>
         <a className="button google" href="/login/federated/google">Sign in with Google</a>
       </div>
-      <DeviceView />
+      <DeviceView user={user}/>
     </div>
   );
 };
