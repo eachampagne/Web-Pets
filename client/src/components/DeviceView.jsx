@@ -43,18 +43,35 @@ const DeviceView = (props) => {
   }, [props.user.name]);
 
   // const dummyPet = () => {
-  //   axios.post('/pet', {petName: 'susie'})
+  //   axios.post('/pet', {petName: 'Comet'})
   //     .catch((err) => {
   //       console.error(err, 'coming from dummyPet');
   //     });
   // };
   // dummyPet();
 
+  const refreshSkillData = function() {
+    axios.get('/training')
+      .then(({ data }) => {
+        setPet({
+          ...pet,
+          training: data
+        });
+      })
+      .catch((error) => {
+        console.error('Failed to get pet skill data:', error);
+      });
+  };
+
   return (
     <div id="device" style={cssTest}>
       this is the device :D
       <ScreenView pet={ pet } />
-      <DashboardView skillData={pet.training} user={props.user} />
+      <DashboardView
+        pet={pet}
+        user={props.user}
+        refreshSkillData={refreshSkillData}
+      />
     </div>
   );
 };

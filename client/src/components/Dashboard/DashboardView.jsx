@@ -7,7 +7,7 @@ const DashboardView = (props) => {
   const [ tab, setTab ] = useState('Skills');
 
 
-  const { skillData, user } = props;
+  const { pet, user } = props;
   const tabs = ['Statuses', 'Interactions', 'Skills'];
 
   const renderTab = () => {
@@ -17,7 +17,7 @@ const DashboardView = (props) => {
       case 'Interactions':
         return <p>Interactions</p>;
       case 'Skills':
-        return <Skills skills={skillData}/>;
+        return <Skills skills={pet.training} refreshSkillData={props.refreshSkillData}/>;
       default:
         return null;
     }
