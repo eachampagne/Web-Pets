@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Pet } = require('../db');
-const skills = require('../data/skills.js');
+const { skills } = require('../data/skills.js');
 
 router.get('/', (req, res) => {
   // if user is signed in - we check the session to see if the passport exist
@@ -32,9 +32,9 @@ router.post('/', (req, res) => {
           Pet.create({
             userId: passport.user.id,
             petName: req.body.petName,
-            training: skills.map((skill) => {
+            training: Object.keys(skills).map((key) => {
               return {
-                name: skill.category,
+                name: key,
                 stat: 0,
               };
             }),

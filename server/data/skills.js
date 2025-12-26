@@ -1,9 +1,9 @@
 // the canonical list of skills
 // in Pokemon terms, this is the full list of all skills for all Pokemon
 // while each individual Pokemon has up to 4 of these
-module.exports = [
-  {
-    category: "Scratching",
+const skills = {
+  "Scratching": {
+    love: 0,
     behaviors: [
       {
         behavior: "scratches you.",
@@ -26,8 +26,8 @@ module.exports = [
       }
     ]
   },
-  {
-    category: "Acrobatics",
+  "Acrobatics": {
+    love: 50,
     behaviors: [
       {
         behavior: "blinks at you.",
@@ -57,8 +57,8 @@ module.exports = [
       }
     ]
   },
-  {
-    category: "Litter Box",
+  "Litter Box": {
+    love: 0,
     behaviors: [
       {
         behavior: "makes a mess.",
@@ -74,4 +74,23 @@ module.exports = [
       }
     ]
   }
-];
+};
+
+const findBehaviors = (petTraining) => {
+  let behaviors = [];
+
+  // don't have to check love stat because pet will only have known skills in training array
+  for (let i = 0; i < petTraining.length; i++) {
+    const { name: category, stat } = petTraining[i];
+    const categoryBehaviors = skills[category].behaviors.filter((behavior) => stat >= behavior.min && stat <= behavior.max);
+
+    behaviors = [...behaviors, ...categoryBehaviors];
+  }
+
+  return behaviors;
+};
+
+module.exports = {
+  skills,
+  findBehaviors
+};
