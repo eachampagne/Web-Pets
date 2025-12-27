@@ -82,7 +82,7 @@ router.patch('/', (req, res) => {
 router.delete('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
-    Pet.findByIdAndDelete({ userId: passport.user.id })
+    Pet.findOneAndDelete({ userId: passport.user.id })
       .then(() => {
         res.sendStatus(200);
       })

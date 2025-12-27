@@ -54,6 +54,18 @@ const DeviceView = (props) => {
       });
   };
 
+  // add a delete button
+  const deletePet = () => {
+    axios.delete('/pet')
+      .then(() => {
+        console.log('hi');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
@@ -63,6 +75,7 @@ const DeviceView = (props) => {
         user={props.user}
         refreshSkillData={refreshSkillData}
       />
+      <button onClick={deletePet}>Delete Pet</button>
     </div>
   );
 };
