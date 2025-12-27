@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
         } else {
           Pet.create({
             userId: passport.user.id,
-            name: req.body.name,
+            name: req.body.petName,
             training: Object.keys(skills).map((key) => {
               return {
                 name: key,
@@ -64,7 +64,7 @@ router.post('/', (req, res) => {
 router.patch('/', (req, res) => {
   const { passport } = req.session;
   if(passport){
-    Pet.findOneAndUpdate({ userId: passport.user.id }, { name: req.body.name }, {new: true})
+    Pet.findOneAndUpdate({ userId: passport.user.id }, { name: req.body.petName }, {new: true})
     .then((pet) => {
       // change the petName to the req.body.petName
       res.status(200).send(pet);
