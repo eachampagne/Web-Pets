@@ -16,14 +16,14 @@ const ScreenView = ({ pet }) => {
     ]
   };
 
-  const [petName, setPetName] = useState('');
+  const [name, setName] = useState('');
 
   const handleSubmit = () => {
-    if(petName === '') {
+    if(name === '') {
       // if the user doesn't enter anything the button does nothing
       return;
     }
-    axios.post('/pet', { petName }) // fix
+    axios.post('/pet', { name }) // fix
       .catch((err) => {
         console.error(err, 'coming from dummyPet');
       });
@@ -39,7 +39,7 @@ const ScreenView = ({ pet }) => {
     } else {
       return (
         <div>
-          <input className={ styles.input.join(' ') } type='text' value={petName} onChange={(e) => setPetName(e.target.value)}/>
+          <input className={ styles.input.join(' ') } type='text' value={name} onChange={(e) => setName(e.target.value)}/>
           <button onClick={handleSubmit}>Submit</button>
         </div>
       );

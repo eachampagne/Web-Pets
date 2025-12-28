@@ -40,13 +40,6 @@ const DeviceView = (props) => {
     }
   }, [props.user.name]);
 
-  // const dummyPet = () => {
-  //   axios.post('/pet', {petName: 'Comet'})
-  //     .catch((err) => {
-  //       console.error(err, 'coming from dummyPet');
-  //     });
-  // };
-  // dummyPet();
 
   const refreshSkillData = function() {
     axios.get('/training')
@@ -61,6 +54,23 @@ const DeviceView = (props) => {
       });
   };
 
+  // add a delete button
+  const deletePet = () => {
+    axios.delete('/pet')
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const [name, setName] = useState('');
+  // update petname
+  const changePetName = () => {
+    axios.patch('/pet', {name})
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <div id="device" className={ deviceStyles.join(' ') }>
       this is the device :D
@@ -70,6 +80,11 @@ const DeviceView = (props) => {
         user={props.user}
         refreshSkillData={refreshSkillData}
       />
+      <button onClick={deletePet}>Delete Pet</button>
+      <div>
+        <input type='text' value={name} onChange={(e) => setName(e.target.value)}/>
+        <button onClick={changePetName}>Submit</button>
+      </div>
     </div>
   );
 };
