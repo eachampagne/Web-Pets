@@ -116,8 +116,8 @@ router.patch('/:id', (req, res)=> {
       // get the current stat for this skill and add the delta from the request body
       const newStat = matchingSkill.stat + skillDelta;
 
-      // update the skill, capped at 100
-      pet.training[pet.training.indexOf(matchingSkill)].stat = newStat < 100 ? newStat : 100;
+      // update the skill, constrained from 0 to 100
+      pet.training[pet.training.indexOf(matchingSkill)].stat = newStat > 100 ? 100 : (newStat < 0 ? 0 : newStat);
 
       // parent document must be saved to save the subdocument
       // https://mongoosejs.com/docs/8.x/docs/subdocs.html
@@ -132,7 +132,7 @@ router.patch('/:id', (req, res)=> {
     });
 });
 
-// TODO:
+// TODO: test
 // DELETE a skill to remove it from the pet
 router.delete('/:id', (req, res) => {
   // check for authentication
@@ -142,13 +142,28 @@ router.delete('/:id', (req, res) => {
     return;
   }
 
-  res.sendStatus(501);
+  // get data from request
+  const skillId = req.params.id;
 
-  // look up pet
-
-    // if doesn't exist, 404
-
-    // remove skill from pet
+  // look up the pet associated with the logged in user
+  Pet.findOne({userId})
+    .then((pet) => {
+      // check that user has a pet
+      if (!pet) {
+        res.sendStatus(404);
+        return;
+      }
+      // remove skill from pet and save the pet
+      pet.training.id(skillId).deleteOne();
+      return pet.save()
+      .then(() => {
+          res.sendStatus(200);
+        });
+    })
+    .catch((error) => {
+      console.error('Failed to find pet', error);
+      res.sendStatus(500);
+    });
 
 });
 
