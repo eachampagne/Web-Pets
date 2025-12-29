@@ -42,7 +42,7 @@ const DeviceView = (props) => {
 
 
   const refreshSkillData = function() {
-    axios.get('/training')
+    axios.get('/training/stats')
       .then(({ data }) => {
         setPet({
           ...pet,

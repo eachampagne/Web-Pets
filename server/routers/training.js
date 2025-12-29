@@ -3,8 +3,22 @@ const { Pet } = require('../db');
 
 const router = express.Router();
 
-// GET all skill data for the pet belonging to the current user
+// TODO:
+// GET stats and behaviors for the pet belonging to the current user
 router.get('/', (req, res) => {
+  const userId = req.session.passport?.user?.id;
+
+  if (userId === undefined) {
+    res.sendStatus(401);
+    return;
+  }
+
+  const skillId = req.params.id;
+  res.status(501).send('get id');
+});
+
+// GET all skill levels (but not behaviors) for the pet belonging to the current user
+router.get('/stats', (req, res) => {
   const userId = req.session.passport?.user?.id;
 
   if (userId === undefined) {
@@ -26,17 +40,48 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET data for the specified skill for the pet belonging to the current user
-router.get('/:id', (req, res) => {
+// TODO:
+// POST a newly unlocked skill to add to the pet belonging to the current user
+router.post('/', (req, res) => {
+  // check for authentication
   const userId = req.session.passport?.user?.id;
-
   if (userId === undefined) {
     res.sendStatus(401);
     return;
   }
 
-  const skillId = req.params.id;
-  res.send('get id');
+  res.sendStatus(501);
+
+  // check if pet exists
+
+  // get skill name out of req body
+
+  // check if it's a real skill
+
+  // if not, send 404
+
+  // if so, add it and send 201
+});
+
+// TODO:
+// GET available skills at the pet's friendship level that it doesn't have
+router.get('/available/', (req, res) => {
+  // check for authentication
+  const userId = req.session.passport?.user?.id;
+  if (userId === undefined) {
+    res.sendStatus(401);
+    return;
+  }
+
+  res.sendStatus(501);
+
+  // look up pet
+
+    // if doesn't exist, 404
+
+    // get pet's friendship and skill list
+
+    // check against list of all skills
 });
 
 // PATCH data to update the specified skill by the delta amount for the pet belonging to the current user
@@ -85,6 +130,47 @@ router.patch('/:id', (req, res)=> {
       console.error('Failed to PATCH pet skill:', error);
       res.sendStatus(500);
     });
+});
+
+// TODO:
+// DELETE a skill to remove it from the pet
+router.delete('/:id', (req, res) => {
+  // check for authentication
+  const userId = req.session.passport?.user?.id;
+  if (userId === undefined) {
+    res.sendStatus(401);
+    return;
+  }
+
+  res.sendStatus(501);
+
+  // look up pet
+
+    // if doesn't exist, 404
+
+    // remove skill from pet
+
+});
+
+// TODO:
+// GET behaviors available to a pet
+router.get('/behavior', (req, res) => {
+  // check for authentication
+  const userId = req.session.passport?.user?.id;
+  if (userId === undefined) {
+    res.sendStatus(401);
+    return;
+  }
+
+  res.sendStatus(501);
+
+  // look up pet
+
+    // if doesn't exist, 404
+
+    // get pet's stats
+
+    // send behaviors that pet can do
 });
 
 module.exports = router;
