@@ -1,29 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-function SkillDashboard({ skills, refreshSkillData }) {
+function SkillDashboard({ skills, availableSkills, behaviors, refreshSkillData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState('');
   const [skillToCreate, setSkillToCreate] = useState('');
-
-  // FOR TESTING ONLY
-  // this will eventually get moved to DeviceView and might not be necessary at all once I have a single training endpoint that does everything
-  const [availableSkills, setAvailableSkills] = useState([]);
-  const refreshAvailableSkills = function() {
-    return axios.get('/training/available')
-      .then(response => setAvailableSkills(response.data))
-      .catch((error) => console.error('failed to get available skills', error));
-  };
-  const [behaviors, setBehaviors] = useState([]);
-  const refreshBehaviors = function() {
-    return axios.get('/training/behavior')
-      .then(response => setBehaviors(response.data))
-      .catch((error) => console.error('failed to get available behaviors', error));
-  };
-  useEffect(() => {
-    refreshAvailableSkills();
-    refreshBehaviors();
-  }, []);
 
   const handleClickTraining = (event) => {
     const skillName = event.target.getAttribute('data-skillname');
@@ -33,7 +14,6 @@ function SkillDashboard({ skills, refreshSkillData }) {
     axios.patch(`/training/${event.target.name}`, {
       delta: 5
     })
-      .then(refreshBehaviors)
       .then(refreshSkillData)
       .catch((error) => {
         console.error(error);
@@ -43,7 +23,6 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleDeleteSkill = () => {
     if (skillToDelete !== '') {
       axios.delete(`/training/${skillToDelete}`)
-        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToDelete(''); // clear the deleted skill so it can't be deleted again
           refreshSkillData();
@@ -57,7 +36,6 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleCreateSkill = () => {
     if (skillToCreate !== '') {
       axios.post('/training', {skillName: skillToCreate})
-        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToCreate(''); // clear the created skill so it can't be created again
           refreshSkillData();
