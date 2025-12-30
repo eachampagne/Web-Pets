@@ -43,7 +43,7 @@ const DeviceView = ({user}) => {
   useEffect(refreshPet, [user.name]);
 
   const refreshSkillData = function() {
-    axios.get('/training')
+    axios.get('/training/stats')
       .then(({ data }) => {
         setPet({
           ...pet,

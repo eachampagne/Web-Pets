@@ -32,12 +32,16 @@ router.post('/', (req, res) => {
           Pet.create({
             userId: passport.user.id,
             name: req.body.name,
-            training: Object.keys(skills).map((key) => {
-              return {
-                name: key,
-                stat: 0,
-              };
-            }),
+            training: Object.keys(skills)
+              // only take the skills that the pet has access to at love = 0
+              .filter((key) => skills[key].love <= 0)
+              // map skill names to skill objects with the stat set to 0
+              .map((key) => {
+                return {
+                  name: key,
+                  stat: 0,
+                };
+              }),
             mood: 0,
             love: 0,
             health: 100,
