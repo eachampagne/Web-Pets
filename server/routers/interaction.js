@@ -9,12 +9,9 @@ router.patch('/:status', (req, res) => {
   const { passport } = req.session;
   const { status } = req.params;
   const { amount } = req.body;
-  
-  const patchedObj = {};
-  patchedObj[status] = amount;
 
   if (passport) {
-    Pet.findOneAndUpdate({ userId: passport.user.id }, patchedObj)
+    Pet.findOneAndUpdate({ userId: passport.user.id }, { [status]: amount })
       .then(pet => {
         if (pet) {
           res.sendStatus(200);
