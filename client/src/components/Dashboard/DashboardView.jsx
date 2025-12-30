@@ -5,7 +5,7 @@ import Skills from './Skills';
 import Statuses from './Statuses';
 import Interactions from './Interactions';
 
-const DashboardView = ({ pet, user, refreshSkillData }) => {
+const DashboardView = ({ pet, user, refreshSkillData, refreshPet }) => {
   
   const [ tab, setTab ] = useState('Statuses');
 
@@ -18,7 +18,7 @@ const DashboardView = ({ pet, user, refreshSkillData }) => {
         case 'Statuses':
           return <Statuses />;
         case 'Interactions':
-          return <Interactions />;
+          return <Interactions pet={ pet } refreshPet={refreshPet} />;
         case 'Skills':
           return <Skills skills={pet.training} refreshSkillData={refreshSkillData}/>;
         default:

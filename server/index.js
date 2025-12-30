@@ -6,6 +6,8 @@ const passport = require('passport');
 
 const authRouter = require('./routers/auth.js');
 const petRouter = require('./routers/pet.js');
+const interactRouter = require('./routers/interaction.js');
+const weatherRouter = require('./routers/weather.js');
 
 const app = express();
 const port = 8080;
@@ -27,6 +29,8 @@ app.use(passport.authenticate('session'));
 app.use('/', authRouter);
 // petRouter
 app.use('/pet', petRouter);
+app.use('/interact', interactRouter);
+app.use('/weather', weatherRouter);
 
 app.listen(port, () => {
   console.info(`App available on http://localhost:${port} or http://127.0.0.1:${port}`);
