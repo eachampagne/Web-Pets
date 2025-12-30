@@ -1,14 +1,8 @@
 
-import React/*, { useEffect }*/ from 'react';
+import React from 'react';
 import axios from 'axios';
 
 const Interactions = ({ pet, refreshPet }) => {
-
-  // useEffect(() => {
-  //   axios.get('http://api.weatherapi.com/v1/current.json?key=2f49298f72354517a83162848252912&q=70112')
-  //     .then((data) => { console.log(data); })
-  //     .catch(err => { console.error(err); });
-  // }, []);
 
   const incrementStats = (statName, amount) => {
     amount = Math.min(amount + pet[statName], 100);
@@ -33,7 +27,7 @@ const Interactions = ({ pet, refreshPet }) => {
         incrementStats('mood', 5);
         break;
     }
-  }
+  };
 
   return (
     <div>

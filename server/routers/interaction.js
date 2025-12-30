@@ -27,15 +27,6 @@ router.patch('/:status', (req, res) => {
         res.sendStatus(500);
       });
   }
-  // Pet.findOneAndUpdate
 });
-
-// router.patch('/mood', (req, res) => {
-//   const { passport } = req.session;
-// });
-
-// router.patch('/love', (req, res) => {
-//   const { passport } = req.session;
-// });
 
 module.exports = router;
