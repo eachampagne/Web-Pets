@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-function SkillDashboard({ skills, refreshSkillData }) {
+function SkillDashboard({ skills, availableSkills, behaviors, refreshSkillData }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [skillToDelete, setSkillToDelete] = useState('');
   const [skillToCreate, setSkillToCreate] = useState('');
 
-  // FOR TESTING ONLY
-  // this will eventually get moved to DeviceView and might not be necessary at all once I have a single training endpoint that does everything
-  const [availableSkills, setAvailableSkills] = useState([]);
-  const refreshAvailableSkills = function() {
-    return axios.get('/training/available')
-      .then(response => setAvailableSkills(response.data))
-      .catch((error) => console.error('failed to get available skills', error));
-  };
-  useEffect(() => {
-    refreshAvailableSkills();
-  }, []);
-
   const handleClickTraining = (event) => {
+    const skillName = event.target.getAttribute('data-skillname');
+    const possibleBehaviors = behaviors[skillName];
+    const behavior = possibleBehaviors[Math.floor(Math.random() * possibleBehaviors.length)];
+    console.log(`The cat ${behavior}`);
     axios.patch(`/training/${event.target.name}`, {
       delta: 5
     })
@@ -31,7 +23,6 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleDeleteSkill = () => {
     if (skillToDelete !== '') {
       axios.delete(`/training/${skillToDelete}`)
-        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToDelete(''); // clear the deleted skill so it can't be deleted again
           refreshSkillData();
@@ -45,7 +36,6 @@ function SkillDashboard({ skills, refreshSkillData }) {
   const handleCreateSkill = () => {
     if (skillToCreate !== '') {
       axios.post('/training', {skillName: skillToCreate})
-        .then(refreshAvailableSkills)
         .then(() => {
           setSkillToCreate(''); // clear the created skill so it can't be created again
           refreshSkillData();
@@ -86,7 +76,7 @@ function SkillDashboard({ skills, refreshSkillData }) {
         return <div key={skill.name}>
           <p>{skill.name}</p>
           <meter max='100' value={skill.stat}></meter>
-          <button onClick={handleClickTraining} name={skill._id}>Train {skill.name}</button>
+          <button onClick={handleClickTraining} name={skill._id} data-skillname={skill.name}>Train {skill.name}</button>
         </div>;
       })}
       <h5 onClick={() => setMenuOpen(m => !m)}>Change Skills</h5>

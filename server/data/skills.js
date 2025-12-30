@@ -122,14 +122,16 @@ const skills = {
 };
 
 const findBehaviors = (petTraining) => {
-  let behaviors = [];
+  let behaviors = {};
 
   // don't have to check love stat because pet will only have known skills in training array
   for (let i = 0; i < petTraining.length; i++) {
     const { name: category, stat } = petTraining[i];
-    const categoryBehaviors = skills[category].behaviors.filter((behavior) => stat >= behavior.min && stat <= behavior.max);
+    const categoryBehaviors = skills[category].behaviors
+      .filter((behavior) => stat >= behavior.min && stat <= behavior.max)
+      .map(behavior => behavior.behavior); // just keep the text, not the min/max values
 
-    behaviors = [...behaviors, ...categoryBehaviors];
+    behaviors[category] = categoryBehaviors;
   }
 
   return behaviors;

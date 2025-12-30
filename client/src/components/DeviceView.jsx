@@ -7,6 +7,8 @@ import DashboardView from './Dashboard/DashboardView';
 
 const DeviceView = ({user}) => {
   const [ pet, setPet ] = useState(null);
+  const [availableSkills, setAvailableSkills] = useState([]);
+  const [behaviors, setBehaviors] = useState([]);
 
   // const cssTest = {
   //   backgroundColor: 'pink',
@@ -24,12 +26,21 @@ const DeviceView = ({user}) => {
 
   const refreshPet = () => {
     if (user.name) {
+      let petExists = false;
       axios.get('/pet')
       .then(({ data }) => {
         if(!data) {
           setPet(null);
         } else {
           setPet(data);
+          petExists = true;
+        }
+      })
+      .then(() => {
+        if (petExists) { // if no pet exists, this would return a 404
+          // but it's not safe to use the state variable yet
+          // so just a flag to check if it's worth getting behaviors/available
+          refreshSkillData(false);
         }
       })
       .catch(err => {
@@ -42,13 +53,19 @@ const DeviceView = ({user}) => {
 
   useEffect(refreshPet, [user.name]);
 
-  const refreshSkillData = function() {
-    axios.get('/training/stats')
+  const refreshSkillData = function(updateTrainingData = true) {
+    axios.get('/training/')
       .then(({ data }) => {
-        setPet({
-          ...pet,
-          training: data
-        });
+        // if the whole pet object has just been fetched, (e.g. on login),
+        // there's no need to update pet.training and risk some sort of state conflict
+        if (updateTrainingData) {
+          setPet({
+            ...pet,
+            training: data.training
+          });
+        }
+        setAvailableSkills(data.available);
+        setBehaviors(data.behaviors);
       })
       .catch((error) => {
         console.error('Failed to get pet skill data:', error);
@@ -79,6 +96,8 @@ const DeviceView = ({user}) => {
       <DashboardView
         pet={pet}
         user={user}
+        availableSkills={availableSkills}
+        behaviors={behaviors}
         refreshSkillData={refreshSkillData}
         refreshPet={refreshPet}
       />

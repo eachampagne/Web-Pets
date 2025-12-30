@@ -1,21 +1,40 @@
 const express = require('express');
 const { Pet } = require('../db');
-const { skills, findAvailableSkills } = require('../data/skills');
+const { skills, findBehaviors, findAvailableSkills } = require('../data/skills');
 
 const router = express.Router();
 
-// TODO:
-// GET stats and behaviors for the pet belonging to the current user
+// GET stats, behaviors, and skills available to be learned for the pet belonging to the current user
 router.get('/', (req, res) => {
+  // check for authentication
   const userId = req.session.passport?.user?.id;
-
   if (userId === undefined) {
     res.sendStatus(401);
     return;
   }
 
-  const skillId = req.params.id;
-  res.status(501).send('get id');
+  // look up the pet associated with the logged in user
+  Pet.findOne({ userId })
+    .then((pet) => {
+      // check that user has a pet
+      if (!pet) {
+        res.sendStatus(404);
+        return;
+      }
+
+      // collect pet skill data, behaviors, and skills available to learn
+      const petSkillData = {
+        training: pet.training,
+        behaviors: findBehaviors(pet.training),
+        available: findAvailableSkills(pet.training, pet.love)
+      };
+
+      res.status(200).send(petSkillData);
+    })
+    .catch((error) => {
+      console.error('Failed to GET pet training data: ', error);
+      res.sendStatus(500);
+    });
 });
 
 // GET all skill levels (but not behaviors) for the pet belonging to the current user
@@ -199,7 +218,6 @@ router.delete('/:id', (req, res) => {
 
 });
 
-// TODO:
 // GET behaviors available to a pet
 router.get('/behavior', (req, res) => {
   // check for authentication
@@ -209,15 +227,22 @@ router.get('/behavior', (req, res) => {
     return;
   }
 
-  res.sendStatus(501);
-
-  // look up pet
-
-    // if doesn't exist, 404
-
-    // get pet's stats
-
-    // send behaviors that pet can do
+  // look up pet associated with the logged in user
+  Pet.findOne({ userId })
+    // check that user has a pet
+    .then((pet) => {
+      if (!pet) {
+        res.sendStatus(404);
+        return;
+      }
+      // find available behaviors based on pet's current stats and send
+      const behaviors = findBehaviors(pet.training);
+      res.status(200).send(behaviors);
+    })
+    .catch((error) => {
+      console.error('Failed to GET pet\'s behaviors', error);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;
