@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
         res.sendStatus(404);
       });
   } else {
-    res.redirect('/login'); // review and check endpoint later
+    res.sendStatus(401); // review and check endpoint later
   }
 });
 
@@ -61,7 +61,7 @@ router.post('/', (req, res) => {
         res.sendStatus(500);
       });
   } else {
-    res.redirect('/login');
+    res.sendStatus(401);
   }
 });
 
@@ -78,7 +78,7 @@ router.patch('/', (req, res) => {
       res.sendStatus(404);
     });
   } else {
-    res.redirect('/login');
+    res.sendStatus(401);
   }
 });
 
@@ -95,7 +95,7 @@ router.delete('/', (req, res) => {
         res.sendStatus(404);
       });
   } else {
-    res.redirect('/login');
+    res.sendStatus(401);
   }
 });
 module.exports = router;
