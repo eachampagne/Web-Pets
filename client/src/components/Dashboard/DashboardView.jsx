@@ -22,6 +22,7 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
         case 'Skills':
           return <Skills
             skills={pet.training}
+            mood={pet.mood}
             availableSkills={availableSkills}
             behaviors={behaviors}
             behaviorMessage={behaviorMessage}
