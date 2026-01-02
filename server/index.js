@@ -37,6 +37,11 @@ app.use('/weather', weatherRouter);
 app.use('/training', trainingRouter);
 app.use('/init', initRouter);
 
+// route to documentation
+const docRouter = express.Router();
+app.use('/docs', docRouter);
+docRouter.use(express.static('docs'));
+
 app.listen(port, () => {
   console.info(`App available on http://localhost:${port} or http://127.0.0.1:${port}`);
 });

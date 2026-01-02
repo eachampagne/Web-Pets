@@ -2,14 +2,37 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 /**
- * A component that displays and interacts with the pet's skills.
+ * @module Skills
+ * @description A component that displays and interacts with the pet's skills.
  * Allows the user to view the pet's current skill levels, to train a skill, to learn a new skill, and to forget existing skills.
  */
-function SkillDashboard({ skills, mood, availableSkills, behaviors, behaviorMessage, refreshSkillData }) {
+function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, refreshSkillData }) {
+  /**
+   * A state variable that controls the rendering of the skill change menu. Toggled by clicking the 'Change Skills' heading.
+   * @type {boolean}
+   * @name menuOpen
+  */
   const [menuOpen, setMenuOpen] = useState(false);
+  /**
+   * A state variable that contains the _id of the skill selected in the 'Forget a skill' dropdown menu. Used to send DELETE requests.
+   * @type {string|ObjectId}
+   * @name skillToDelete
+   */
   const [skillToDelete, setSkillToDelete] = useState('');
+  /**
+   * A state variable that contains the name of the skill selected in the 'Learn a new skill' dropdown menu. Used to send POST requests.
+   * @type {string}
+   * @name skillToCreate
+   */
   const [skillToCreate, setSkillToCreate] = useState('');
 
+  /**
+   * Controls what happens when the user trains a specific skill. One of the possible behaviors for that skill is chosen at random and a message is sent to the screen
+   * to describe what the pet does. A request is sent to the server to update the pet's skill level in the database, and a skill refresh is triggered.
+   * @name handleClickTraining
+   * @function
+   * @param {event} event - the event fired by clicking a train skill button
+   */
   const handleClickTraining = (event) => {
     const skillName = event.target.getAttribute('data-skillname');
     const possibleBehaviors = behaviors[skillName];
@@ -24,6 +47,11 @@ function SkillDashboard({ skills, mood, availableSkills, behaviors, behaviorMess
       });
   };
 
+  /**
+   * Deletes a skill by sending a DELETE request to the server with the _id of the skill currently selected in the dropdown menu, then triggers a skill refresh.
+   * @name handleDeleteSkill
+   * @function
+   */
   const handleDeleteSkill = () => {
     if (skillToDelete !== '') {
       axios.delete(`/training/${skillToDelete}`)
@@ -37,6 +65,11 @@ function SkillDashboard({ skills, mood, availableSkills, behaviors, behaviorMess
     }
   };
 
+  /**
+   * Deletes a skill by sending a POST request to the server with the name of the skill currently selected in the dropdown menu, then triggers a skill refresh.
+   * @name handleCreateSkill
+   * @function
+   */
   const handleCreateSkill = () => {
     if (skillToCreate !== '') {
       axios.post('/training', {skillName: skillToCreate})
@@ -50,6 +83,13 @@ function SkillDashboard({ skills, mood, availableSkills, behaviors, behaviorMess
     }
   };
 
+  /**
+   * Renders the create/delete skill section, including the dropdown menus to select skills to learn/forget and buttons to trigger create/delete requests to the server.
+   * This section is conditionally rendered only when menuOpen is true (toggled by clicking the Change Skills heading). This declutters the view when not changing skills
+   * and makes it more difficult to delete a skill by accident.
+   * @name renderSkillChangeMenu
+   * @function
+   */
   const renderSkillChangeMenu = () => {
     return (
       <div>
@@ -89,4 +129,4 @@ function SkillDashboard({ skills, mood, availableSkills, behaviors, behaviorMess
   );
 }
 
-export default SkillDashboard;
+export default Skills;

@@ -11,7 +11,7 @@
     "build": "webpack",
     "style": "npx @tailwindcss/cli -i ./client/src/input.css -o ./client/dist/output.css",
     "style:dev": "npx @tailwindcss/cli -i ./client/src/input.css -o ./client/dist/output.css --watch",
-    "doc": "./node_modules/.bin/jsdoc ./client/src ./server -r -d ./client/dist/docs"
+    "doc": "./node_modules/.bin/jsdoc ./client/src ./server -r -d ./docs"
   },
   "author": "",
   "license": "UNLICENSED",
