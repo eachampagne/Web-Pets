@@ -84,8 +84,21 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
   };
 
   /**
+   * Handles both toggling {@link menuOpen} and clearing {@link skillToDelete} and {@link skillToCreate}. This is necessary to ensure that the value of skillToDelete/Create always matches the
+   * value displayed in the dropdown menus. If not, it would be possible to select from the dropdowns, close and reopen the skill change menu, and then create/delete the
+   * previously selected item even though the dropdown displayed 'Choose a skill'.
+   * @name toggleSkillChangeMenu
+   * @function
+   */
+  const toggleSkillChangeMenu = () => {
+    setMenuOpen(m => !m);
+    setSkillToCreate('');
+    setSkillToDelete('');
+  };
+
+  /**
    * Renders the create/delete skill section, including the dropdown menus to select skills to learn/forget and buttons to trigger create/delete requests to the server.
-   * This section is conditionally rendered only when menuOpen is true (toggled by clicking the Change Skills heading). This declutters the view when not changing skills
+   * This section is conditionally rendered only when {@link menuOpen} is true (toggled by clicking the Change Skills heading). This declutters the view when not changing skills
    * and makes it more difficult to delete a skill by accident.
    * @name renderSkillChangeMenu
    * @function
@@ -123,7 +136,7 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
           <button onClick={handleClickTraining} name={skill._id} data-skillname={skill.name}>Train {skill.name}</button>
         </div>;
       })}
-      <h5 onClick={() => setMenuOpen(m => !m)}>Change Skills</h5>
+      <h5 onClick={toggleSkillChangeMenu}>Change Skills</h5>
       {menuOpen ? renderSkillChangeMenu() : null}
     </div>
   );
