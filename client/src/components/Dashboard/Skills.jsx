@@ -31,7 +31,8 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
    * to describe what the pet does. A request is sent to the server to update the pet's skill level in the database, and a skill refresh is triggered.
    * @name handleClickTraining
    * @function
-   * @param {event} event - the event fired by clicking a train skill button
+   * @param {event} event - the event fired by clicking a train skill button. The event's target has a data-skillname attribute that gives access to the skill name for behavior lookup,
+   * and a name that is the skill's ObjectId for sending the PATCH request.
    */
   const handleClickTraining = (event) => {
     const skillName = event.target.getAttribute('data-skillname');

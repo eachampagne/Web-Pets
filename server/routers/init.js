@@ -4,15 +4,13 @@ const { findBehaviors, findAvailableSkills } = require('../data/skills');
 
 const router = express.Router();
 
-/** @module init */
+/** @module initRouter */
 
 /**
- * This route handles getting all relevant data when loading a pet at app startup. 
- * This replaces several subsequent request to GET /pet, GET /training, and whichever weather routes end up existing.
+ * This route handles getting all relevant data when loading a pet at app startup.
+ * This replaces chained (and conflicting) requests to GET /pet and GET /training.
  * This does NOT replace the initial request to GET /user from <App />.
- * @todo
  * @name GET /init
- * @function
  */
 router.get('/', (req, res) => {
   // check for authentication

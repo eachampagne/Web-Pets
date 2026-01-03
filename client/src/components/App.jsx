@@ -3,9 +3,28 @@ import axios from 'axios';
 
 import DeviceView from './DeviceView';
 
+/**
+ * The root component of Web Pets. This component handles logging in and out,
+ * and renders the DeviceView which contains the rest of the game.
+ * @module App
+ */
 const App = () => {
+  /**
+   * A state variable that holds user data returned from the server. This is updated upon app
+   * initialization and when logging in (when the user is redirected back to the app's homepage)
+   * and logging out (explicitly within the handleLogout function).
+   * @type {object}
+   * @name user
+   * @property {string} name - used by App to determine if the user is logged in or out. If user.name is an empty string,
+   * the user is assumed to be logged out.
+   */
   const [ user, setUser ] = useState({ name: '' });
 
+  /**
+   * App requests user data from the server at startup using useEffect.
+   * @name Initial User Request
+   * @function
+   */
   useEffect(() => {
     axios.get('/user')
       .then(({ data }) => {
@@ -16,6 +35,11 @@ const App = () => {
       });
   }, []);
 
+  /**
+   * Logs the user out and clears the user object.
+   * @name handleLogout
+   * @function
+   */
   const handleLogout = function() {
     axios.post('/logout', {})
       .then(() => {
@@ -26,7 +50,13 @@ const App = () => {
       });
   };
 
+  /**
+   * Renders user information and a login/logout button as appropriate.
+   * @name renderAuthData
+   * @function
+   */
   const renderAuthData = () => {
+    const { name } = user;
     if (name) {
       return (
         <div>
@@ -42,7 +72,6 @@ const App = () => {
     }
   };
 
-  const { name } = user;
   return (
     <div>
       {renderAuthData()}

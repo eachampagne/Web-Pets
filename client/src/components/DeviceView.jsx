@@ -5,18 +5,43 @@ import axios from 'axios';
 import ScreenView from './ScreenView';
 import DashboardView from './Dashboard/DashboardView';
 
+/**
+ * @module DeviceView
+ * @description The component that controls most of the game client-side. It handles fetching and storing
+ * pet data and passing data down to subcomponents.
+*/
 const DeviceView = ({user}) => {
+  /**
+   * A state variable that holds all pet data returned from the server.
+   * @type {object}
+   * @name pet
+   */
   const [ pet, setPet ] = useState(null);
+  /**
+   * A state variable that is passed down to render a message on ScreenView.
+   * @type {string}
+   * @name message
+   */
   const [ message, setMessage ] = useState('');
+  /**
+   * A state variable that holds the skills currently available for the pet to learn.
+   * @type {array}
+   * @name availableSkills
+   */
   const [ availableSkills, setAvailableSkills ] = useState([]);
+  /**
+   * A state variable that holds the behaviors a pet can currently choose from.
+   * @type {object}
+   * @name behaviors
+   */
   const [ behaviors, setBehaviors ] = useState([]);
-
-  // const cssTest = {
-  //   backgroundColor: 'pink',
-  //   borderRadius: '20px',
-  //   margin: '20px',
-  //   padding: '10px',
-  // };
+  /**
+   * A state variable that stores the name currently typed into the change pet name field.
+   * Used by changePetName to send PATCH requests.
+   * @type {string}
+   * @name name
+  */
+  const [name, setName] = useState('');
 
   const deviceStyles = [
     'bg-[pink]', // background color
@@ -25,11 +50,18 @@ const DeviceView = ({user}) => {
     'p-[15px]', // padding
   ];
 
+  /**
+   * Fetches all pet data needed to initiate the game. This includes not just the pet object,
+   * but also availableSkills and behaviors. This prevents having to call both refreshPet and
+   * refreshSkillData (and having to ensure only one sets pet in state) upon app startup.
+   * This function is necessary when the pet changes, for instance when logging in or creating a new pet.
+   * @name initPet
+   * @function
+   */
   const initPet = () => {
     if (user.name) {
       axios.get('/init')
         .then(({ data }) => {
-          //TODO: add weather data once finished
           if (!data) {
             setPet(null);
             setBehaviors([]);
@@ -51,6 +83,13 @@ const DeviceView = ({user}) => {
     }
   };
 
+  /**
+   * Fetches and updates the pet object, but not extraneous skill data (availableSkills
+   * and behaviors). This is preferred when the skill data is guaranteed not to change;
+   * for instance, when playing with or feeding the pet.
+   * @name refreshPet
+   * @function
+   */
   const refreshPet = () => {
     if (user.name) {
       axios.get('/pet')
@@ -69,8 +108,14 @@ const DeviceView = ({user}) => {
     }
   };
 
-  useEffect(initPet, [user.name]);
-
+  /**
+   * Fetches and updates skill data (the pet's training array, availableSkills,
+   * and behaviors, but not the rest of the pet object). This is preferred when
+   * training the pet, which only affects the pet's skill data, not its mood or
+   * other stats.
+   * @name refreshSkillData
+   * @function
+  */
   const refreshSkillData = function(updateTrainingData = true) {
     axios.get('/training/')
       .then(({ data: { training, available, behaviors } }) => {
@@ -90,16 +135,32 @@ const DeviceView = ({user}) => {
       });
   };
 
+  /**
+   * A function that sets the message that is rendered by ScreenView.
+   * This function can be passed down to other subcomponents to allow them
+   * to send messages to the screen.
+   * @name displayMessage
+   * @function
+   */
   const displayMessage = function(message) {
     setMessage(message);
   };
 
-  // the skills dashboard doesn't actually have access to the pet's name
+  /**
+   * A function that sets a message that begins with the pet's name. Can be used
+   * by components that don't have access to the entire pet object.
+   * @name behaviorMessage
+   * @function
+  */
   const behaviorMessage = function(behavior) {
     displayMessage(`${pet.name} ${behavior}`);
   };
 
-  // add a delete button
+  /**
+   * Sends a DELETE pet request to the server.
+   * @name deletePet
+   * @function
+  */
   const deletePet = () => {
     axios.delete('/pet')
       .then(() => {
@@ -110,8 +171,11 @@ const DeviceView = ({user}) => {
       });
   };
 
-  const [name, setName] = useState('');
-  // update petname
+  /**
+   * Sends a PATCH request to the server to update the current pet's name.
+   * @name changePetName
+   * @function
+  */
   const changePetName = () => {
     axios.patch('/pet', {name})
       .then(() => {
@@ -121,6 +185,13 @@ const DeviceView = ({user}) => {
         console.error(err);
       });
   };
+
+  /**
+   * DeviceView requests all pet and skill data at startup.
+   * @name Initial Pet Request
+   * @function
+   */
+  useEffect(initPet, [user.name]);
 
   return (
     <div id="device" className={ deviceStyles.join(' ') }>

@@ -1,6 +1,27 @@
-// the canonical list of skills
-// in Pokemon terms, this is the full list of all skills for all Pokemon
-// while each individual Pokemon has up to 4 of these
+/** @module skillsData*/
+
+/**
+ * Behavior type definition
+ * @typedef {Object} behavior
+ * @property {string} behavior - a description of the pet's actions while performing this behavior
+ * @property {number} min - the minimum skill level for the pet to perform this action
+ * @property {number} max - the maximum skill level for the pet to perform this action
+ * @property {number} prev - the skill level at which the pet stops performing the previous action (unused, originally intended to let the client know when to request updated behaviors)
+ * @property {number} next - the skill level at which the pet starts performing the next action (unused, originally intended to let the client know when to request updated behaviors)
+*/
+
+/**
+ * Skill type definition
+ * @typedef {Object} Skill
+ * @property {number} love - the love stat required to learn a skill
+ * @property {Array<behavior>} behaviors - the list of behaviors associated with this skill
+ */
+
+/**
+ * The list of all possible skills. A given pet will know a subset of these.
+ * @type {Object}
+ * @name skills
+ */
 const skills = {
   "Scratching": {
     love: 0,
@@ -121,6 +142,11 @@ const skills = {
   }
 };
 
+/**
+ * Finds the behaviors that a pet could do based on its current skill levels
+ * @param {Array} petTraining - an array of pet training objects with a name and stat
+ * @returns {object}
+ */
 const findBehaviors = (petTraining) => {
   let behaviors = {};
 
@@ -141,6 +167,7 @@ const findBehaviors = (petTraining) => {
  * Finds the skills that a pet does not know, but could learn given its current love stat.
  * @param {Array} petTraining - an array of pet training objects with a name and stat
  * @param {Number} love - the pet's love stat
+ * @returns {Array<Skill>}
  */
 const findAvailableSkills = (petTraining, love) => {
   const currentSkills = petTraining.map((skill) => skill.name);
