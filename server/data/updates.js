@@ -1,5 +1,5 @@
 
-const { Pet, User } = require('../db');
+const { Pet, User, Weather } = require('../db');
 
 // this is where pet info will be [scheduled to be] updated
 // such as Love/Health increase/decay, Hunger/Mood decay, Skills decay
@@ -20,8 +20,9 @@ const { Pet, User } = require('../db');
 let twelveOClock = new Date(`${new Date().toDateString()} 12:00 AM`);
 twelveOClock.setDate(twelveOClock.getDate() + 1);
 
+const oneHour = 60 * 60 * 1000;
+
 const updateAllPets = () => {
-  console.log('updating pets');
   Pet.find()
     .then(pets => {
       pets.forEach(pet => {
@@ -81,10 +82,28 @@ const updateAllPets = () => {
   });
 };
 
+const clearWeatherCache = () => {
+  Weather.find()
+    .then(weather => {
+      weather.forEach(instance => {
+        if (((new Date()) - instance.updatedAt) >= oneHour) {
+          Weather.deleteOne(instance)
+            .catch(err => {
+              console.error('Could not delete a weather instance in cache reset: ', err);
+            });
+        }
+      });
+    })
+    .catch(err => {
+      console.error('Unable to find weather data in database: ', err);
+    });
+};
+
 const handleTimer = () => {
   if (new Date() - twelveOClock >= 0) {
     updateAllPets();
     twelveOClock.setDate(twelveOClock.getDate() + 1);
+    clearWeatherCache();
     handleTimer();
   }
   else {
