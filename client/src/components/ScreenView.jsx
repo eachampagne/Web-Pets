@@ -40,7 +40,7 @@ const ScreenView = ({ pet, user, message , initPet}) => {
  * when the user provides a name inside the input field when creating/adopting
  * a pet. Note that the user is not allowed to leave the input field blank.
  * @name handleSubmit
- * @params {string} name - name of the pet
+ * @property {string} name - name of the pet
  */
   const handleSubmit = () => {
     if(name === '') {
@@ -101,7 +101,7 @@ const ScreenView = ({ pet, user, message , initPet}) => {
   /**
  * This is rendering the message that is passed down through props.
  * Also calls the functions above to render the results to the page.
- * @name rendingScreen
+ * @name renderingScreen
  */
   return (
     <div className={ styles.screen.join(' ') }>

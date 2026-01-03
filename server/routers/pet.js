@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
  * the user that is signed in, this request handling will check if they have currently have a pet before making
  * one.
  * @name POST /pet
- * @param {string} name - {body parameter} name of the pet
+ * @property {string} name - {body parameter} name of the pet
  */
 router.post('/', (req, res) => {
   const { passport } = req.session;
@@ -92,7 +92,7 @@ router.post('/', (req, res) => {
  * and if they have a pet. If both conditions are true, it will update the name of the pet
  * with whatever the user inputs into the update field.
  * @name PATCH /pet
- * @param {string} name - {body parameter} new name for the pet
+ * @property {string} name - {body parameter} new name for the pet
  */
 router.patch('/', (req, res) => {
   const { passport } = req.session;
