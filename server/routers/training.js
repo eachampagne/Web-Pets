@@ -135,7 +135,7 @@ router.get('/behavior', (req, res) => {
 /**
  * POST a newly unlocked skill to add to the pet belonging to the current user
  * @name POST /training/
- * @param {String} skillName - [body parameter] the name of the skill to add to the pet
+ * @property {String} skillName - [body parameter] the name of the skill to add to the pet
  */
 router.post('/', (req, res) => {
   // check for authentication
@@ -187,8 +187,8 @@ router.post('/', (req, res) => {
 /**
  * PATCH data to update the specified skill by the delta amount for the pet belonging to the current user
  * @name PATCH /training/:id
- * @param {ObjectId} id - [path parameter] the id of the skill to update
- * @param {Number} delta - [body parameter] the amount to change the skill level by (accepts negative numbers)
+ * @property {ObjectId} id - [path parameter] the id of the skill to update
+ * @property {Number} delta - [body parameter] the amount to change the skill level by (accepts negative numbers)
  */
 router.patch('/:id', (req, res)=> {
   // check for authentication
@@ -240,7 +240,7 @@ router.patch('/:id', (req, res)=> {
 /**
  * DELETE a skill to remove it from the pet
  * @name DELETE /training/:id
- * @param {ObjectId} id - (path parameter) the id of the skill to remove
+ * @property {ObjectId} id - (path parameter) the id of the skill to remove
  */
 router.delete('/:id', (req, res) => {
   // check for authentication
