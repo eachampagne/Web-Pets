@@ -5,7 +5,7 @@ import axios from 'axios';
 const Interactions = ({ pet, refreshPet }) => {
 
   const incrementStats = (statName, amount) => {
-    amount = Math.min(amount + pet[statName], 100);
+    // amount = Math.min(amount + pet[statName], 100);
     axios.patch(`/interact/${statName}`, { amount })
       .then(refreshPet)
       .catch(err => {
