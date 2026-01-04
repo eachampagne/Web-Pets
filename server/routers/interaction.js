@@ -14,16 +14,23 @@ router.patch('/:status', (req, res) => {
   const { amount } = req.body;
 
   if (passport) {
-    Pet.findOneAndUpdate({ userId: passport.user.id }, { [status]: amount })
+    Pet.findOne({ userId: passport.user.id })
       .then(pet => {
         if (pet) {
-          res.sendStatus(200);
+          Pet.updateOne(pet, { [status]: Math.min(pet[status] + amount, 100) })
+            .then(() => {
+              res.sendStatus(200);
+            })
+            .catch(err => {
+              console.error('Unable to update pet in interactions route: ', err);
+              res.sendStatus(500);
+            });
         } else {
           res.sendStatus(404);
         }
       })
       .catch(err => {
-        console.error('Unable to find pet and update in interaction route: ', err);
+        console.error('Unable to find pet in interactions route: ', err);
         res.sendStatus(500);
       });
   }
