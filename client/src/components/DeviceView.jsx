@@ -218,7 +218,7 @@ const DeviceView = ({user, refreshUserStats}) => {
 
         </div>
       </div>
-      this is the device :D
+      Web Pets
       <ScreenView
         pet={ pet }
         user = {user}

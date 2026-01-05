@@ -50,7 +50,7 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
   // TODO: display "off" dashboard when logged out instead of displaying nothing
   return (
     <div style={{ border: '1px solid black', marginTop: '5px' }}>
-      <div>
+      <div className="border-2 border-solid " >
         Pet Status:
         {onlyStatus()}
       </div>
