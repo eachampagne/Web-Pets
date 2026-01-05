@@ -22,6 +22,7 @@ npm start
 
 * `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` - generated while registering the app with the [Google Cloud Platform](https://console.cloud.google.com/) to use Google authentication. Remember to also register the correct redirect API while registering the app. See [the Passport documentation](https://www.passportjs.org/tutorials/google/register/) for more information.
 * `WEATHER_API_KEY` - the key for [Weather API](https://www.weatherapi.com/)
+* `UPDATE_AT` - the hour from 0 to 23, where 0 is midnight and 23 is 11 PM, at which the server will run `UpdateAllPets` and `ClearWeatherCache`. Used to account for differing server timezones.
 
 See `server/.env.example` for a template file.
 
