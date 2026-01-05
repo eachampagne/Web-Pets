@@ -22,13 +22,20 @@ const ScreenView = ({ pet, user, message, initPet, refreshUserStats}) => {
 
   const styles = {
     screen: [ // { border: '5px inset hotpink', height: '360px', margin: '5px', backgroundColor: 'lavender' }
-      'border-5', // border width
-      'border-blue-600', // border color
-      'bg-indigo-50' // background color
+      'border-10', // border width
+      'border-[#a1e7ff]', // border color - a lighter version of the device color to make the inset look right
+      'bg-indigo-50', // background color
+      'm-bottom-[5px]',
+      'm-top-[10px]',
     ],
     input: [
       'rounded-md', // border radius
       'border-2', // border width
+    ],
+    popup: [
+      'text-white',
+      'place-self-center',
+      'bg-[#333032]'
     ]
   };
 /**
@@ -85,20 +92,21 @@ const ScreenView = ({ pet, user, message, initPet, refreshUserStats}) => {
  */
   const renderScreenContents = () => {
     if (pet !== null) {
-      return (
-        <div>
-          <p>{pet.name}</p>
-        </div>
-      );
+      // return (
+      //   <div>
+      //     <p>{pet.name}</p>
+      //   </div>
+      // );
+      return null;
     } else if (user.name) {
       return (
-        <div>
+        <div className={styles.popup.join(' ')}>
           <input className={ styles.input.join(' ') } type='text' value={name} onChange={(e) => setName(e.target.value)}/>
           <button onClick={handleSubmit}>Submit</button>
         </div>
       );
     } else {
-      return <p>Please sign in</p>;
+      return <div className={styles.popup.join(' ')}>Please sign in</div>;
     }
   };
 
@@ -135,11 +143,13 @@ const ScreenView = ({ pet, user, message, initPet, refreshUserStats}) => {
  * @name renderingScreen
  */
   return (
-    <div className={ styles.screen.join(' ') }>
-      {message}
-      {renderScreenContents()}
-      <img src={chooseImage()} className="w-[600px] h-[300px]" style={{"imageRendering": "pixelated"}}/>
-      <button onClick={ refreshWeather } >{ weather.condition }</button>
+    <div className={ styles.screen.join(' ')} style={{"borderStyle": "inset"}}>
+      <img src={chooseImage()} className="w-full" style={{"imageRendering": "pixelated"}}/>
+      <div className="bg-[#333032] text-white h-[4.5rem]">
+        <p className="h-[1.5rem]">{message}</p>
+        <button onClick={ refreshWeather } >{ weather.condition }</button>
+        {renderScreenContents()}
+      </div>
     </div>
   );
 };

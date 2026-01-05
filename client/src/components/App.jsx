@@ -117,9 +117,11 @@ const App = () => {
   };
 
   return (
-    <div>
-      {renderAuthData()}
-      <button onClick={forceServerUpdate}>Update Now</button>
+    <div className='sm:grid sm:grid-flow-row sm:m-[40px]'>
+      <div className="p-[10px] sm:p-[0px]">
+        {renderAuthData()}
+        <button onClick={forceServerUpdate}>Update Now</button>
+      </div>
       <DeviceView user={user} refreshUserStats={refreshUserStats}/>
     </div>
   );

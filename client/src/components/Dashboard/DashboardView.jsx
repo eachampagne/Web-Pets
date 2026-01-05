@@ -12,6 +12,24 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
   // const { pet, user } = props;
   const tabs = ['Interactions', 'Skills'];
 
+  // original: style={{ border: '1px solid black', marginTop: '5px' }}
+  const dashBoardStyles = [
+    'm-top-[5px]',
+    'min-h-[300px]'
+  ];
+
+  const tabStyles = [
+    'border-2',
+    'border-black',
+    'mx-[4px]',
+    'mt-[10px]',
+    'mb-[-2px]', // make the lines on the labels line up with the tab views
+    'rounded-t-lg',
+    'px-[4px]',
+  ];
+
+  const tabSelectedStyles = tabStyles.concat('border-b-device');
+
   const renderTab = () => {
     if (pet) {
       switch (tab) {
@@ -49,14 +67,23 @@ const DashboardView = ({ pet, user, availableSkills, behaviors, behaviorMessage,
 
   // TODO: display "off" dashboard when logged out instead of displaying nothing
   return (
-    <div style={{ border: '1px solid black', marginTop: '5px' }}>
+    <div className={dashBoardStyles.join(' ')}>
       <div className="border-2 border-solid " >
         Pet Status:
         {onlyStatus()}
       </div>
       <span>
         {tabs.map((tabName) => {
-          return <button name={tabName} onClick={handleTabSelect} key={tabName}>{tabName}</button>;
+          return <button
+            name={tabName}
+            onClick={handleTabSelect}
+            key={tabName}
+            // choose either the style with the black bottom border or the device-colored bottom border
+            // to make the selected tab come forward
+            className={(tabName === tab ? tabSelectedStyles : tabStyles).join(' ')}
+          >
+            {tabName}
+          </button>;
         })}
       </span>
       {renderTab()}

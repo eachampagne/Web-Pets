@@ -45,9 +45,15 @@ const DeviceView = ({user, refreshUserStats}) => {
 
   const deviceStyles = [
     'bg-device', // background color
-    'sm:rounded-lg', // border radius
+    'sm:rounded-[2rem]', // border radius
+    'sm:shadow-lg/100', // shadow for dimensionality
+    'sm:inset-shadow-sm', // inset shadow gives a bit of shine
+    'sm:inset-shadow-white/50', // change inset shadow color
     'sm:m-[20px]', // margin
-    'p-[15px]', // padding
+    'p-[2rem]', // padding
+    'w-full',
+    'max-w-[1250px]',
+    'sm:justify-self-center'
   ];
 
   /**
@@ -197,7 +203,7 @@ const DeviceView = ({user, refreshUserStats}) => {
     <div id="device" className={ deviceStyles.join(' ') }>
       <div className="relative h-[65px]">
         <div className="absolute right-[50px] bottom-[-23px] flex flex-col gap-3">
-          <div className="flex itmes-center gap-2">
+          <div className="flex items-center gap-2">
             <input type='text'
             value={name}
             className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-2.5 py-2 shadow-xs placeholder:'text-body'"
@@ -218,7 +224,7 @@ const DeviceView = ({user, refreshUserStats}) => {
 
         </div>
       </div>
-      Web Pets
+      <h1 className="text-[25px]">Web Pets</h1>
       <ScreenView
         pet={ pet }
         user = {user}

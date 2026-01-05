@@ -26,6 +26,13 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
    */
   const [skillToCreate, setSkillToCreate] = useState('');
 
+  const skillTabStyles = [
+    'border-2',
+    'border-black',
+    'p-[10px]',
+    'flex',
+  ];
+
   /**
    * Controls what happens when the user trains a specific skill. One of the possible behaviors for that skill is chosen at random and a message is sent to the screen
    * to describe what the pet does. A request is sent to the server to update the pet's skill level in the database, and a skill refresh is triggered.
@@ -128,17 +135,20 @@ function Skills({ skills, mood, availableSkills, behaviors, behaviorMessage, ref
   };
 
   return (
-    <div>
-      <h4>Skill Dashboard</h4>
-      {skills.map((skill) => {
-        return <div key={skill.name}>
-          <p>{skill.name}</p>
-          <meter max='100' value={skill.stat}></meter>
-          <button onClick={handleClickTraining} name={skill._id} data-skillname={skill.name}>Train {skill.name}</button>
-        </div>;
-      })}
-      <h5 onClick={toggleSkillChangeMenu}>Change Skills</h5>
-      {menuOpen ? renderSkillChangeMenu() : null}
+    <div className={skillTabStyles.join(' ')}>
+      <div className="flex-1">
+        {skills.map((skill) => {
+          return <div key={skill.name}>
+            <p>{skill.name}</p>
+            <meter max='100' value={skill.stat}></meter>
+            <button onClick={handleClickTraining} name={skill._id} data-skillname={skill.name}>Train {skill.name}</button>
+          </div>;
+        })}
+      </div>
+      <div className="flex-1">
+        <h5 onClick={toggleSkillChangeMenu}>Change Skills ↓</h5>
+        {menuOpen ? renderSkillChangeMenu() : null}
+      </div>
     </div>
   );
 }
