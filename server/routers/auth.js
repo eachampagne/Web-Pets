@@ -88,7 +88,8 @@ router.get('/login/federated/google', passport.authenticate('google'));
 /**
  * The endpoint that users are redirected to after signing in with Google.
  * NOTE: this endpoint MUST be registered as an Authorized Redirect URI in the
- * Google Cloud Platform (see [the tutorial]{@link https://www.passportjs.org/tutorials/google/register/}
+ * [Google Cloud Platform]{@link https://console.cloud.google.com/} (see
+ * [the tutorial]{@link https://www.passportjs.org/tutorials/google/register/}
  * for more information). This also means that the server must have a domain that satisfies
  * Google's requirements or you can't register the Redirect URI and authentication won't work.
  * Localhost and AWS Elastic IPs (need the one that ends in amazonaws.com) work, bare IP addresses do not.
@@ -100,7 +101,7 @@ router.get('/oauth2/redirect/google', passport.authenticate('google', {
 }));
 
 /**
- * Allows the client application to request user data to know if it's logged in or not.
+ * Allows the client application to request user data to know whether it's logged in and display any user stats.
  * @name GET /user
  */
 router.get('/user', (req, res) => {
