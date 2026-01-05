@@ -40,3 +40,27 @@ See `server/.env.example` for a template file.
 * Styling: Tailwind CSS
 * Building: Webpack and Babel
 * External API: [Weather API](https://www.weatherapi.com/)
+
+### Roadmap
+
+#### Known Issues
+
+* The client never automatically refreshes. If a user is on the page when the server runs the nightly pet updates, the user won't see any indication that the pet's stats have changed until either refreshing the page or otherwise triggering a refresh.
+
+#### Feature Ideas
+
+* Art assets for nighttime
+* Some way for weather to interact with gameplay - possibly the pet would need specific care (warmth, shelter, etc.) depending on the weather conditions or risk a health penalty
+* Location specific weather - currently the weather always matches New Orleans rather than or allowing the user to specify a location or finding the location from their ip
+
+### Contributing
+
+This project uses a forking workflow. To contribute, fork the project onto your own account and clone down. Work on feature branches, then push changes to a feature branch on your own repo's GitHub. Open a pull request from the feature branch. Changes must be approved by at least one other team member before being merged into the organization's main branch and deployed.
+
+### Style Guide
+
+We used the recommended ESLint settings, but enforced using semicolons everywhere and forbade console.log statements (except for debugging, on a temporary basis). Anything that needs to be logged, such as server statuses or errors, should use console.info, console.warn, or console.error. We failed to get ESLint to stop complaining that props were missing from prop validation.
+
+### Documentation
+
+This project uses JSDoc to generate documentation from comments in the source code. To generate the documentation, run `npm run doc`. Documentation can be accessed after generation either by navigating to the generated html files, or by running the server and navigating to `{server address}/docs`.
