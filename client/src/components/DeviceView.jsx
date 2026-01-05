@@ -170,6 +170,7 @@ const DeviceView = ({user, refreshUserStats}) => {
   const deletePet = () => {
     axios.delete('/pet')
       .then(() => {
+        displayMessage('Welcome to Web Pets!');
         refreshPet();
       })
       .catch((err) => {
@@ -205,23 +206,19 @@ const DeviceView = ({user, refreshUserStats}) => {
    * @function
    */
   useEffect(() => {
-    if (pet) {
-      switch (user.status) {
-        case 'adopted':
-          displayMessage('Your pet loves you!');
-          break;
-        case 'disappeared':
-          displayMessage('Your pet is nowhere to be found.');
-          break;
-        case 'befriending':
-          displayMessage('Your pet is waiting for you.');
-          break;
-        default:
-          displayMessage('Welcome to Web Pets!');
-          break;
-      }
-    } else {
-      displayMessage('Welcome to Web Pets!');
+    switch (user.status) {
+      case 'adopted':
+        displayMessage('Your pet loves you!');
+        break;
+      case 'disappeared':
+        displayMessage('Your pet is nowhere to be found.');
+        break;
+      case 'befriending':
+        displayMessage('Your pet is waiting for you.');
+        break;
+      default:
+        displayMessage('Welcome to Web Pets!');
+        break;
     }
   }, [user.status]);
 

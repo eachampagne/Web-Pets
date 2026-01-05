@@ -9,8 +9,8 @@ const { Schema } = mongoose;
  */
 
 /**
- * For the training data for the pet. Gets the pet name from what
- * the user submits as an input when creating a pet.
+ * For the training data for the pet. Name is the skill name (e.g. 'acrobatics')
+ * and stat is the pet's skill level.
  * @name trainingSchema
  */
 const trainingSchema = new mongoose.Schema({
@@ -21,6 +21,8 @@ const trainingSchema = new mongoose.Schema({
 /**
  * For holding the behavior of the pet. Can and will change based
  * on the user interating with the pet.
+ * This was never implemented - instead, the possible behaviors are found when needed
+ * rather than saving them to the pet object.
  * @name behaviorSchema
  */
 const behaviorSchema = new mongoose.Schema({
@@ -33,7 +35,7 @@ const behaviorSchema = new mongoose.Schema({
 });
 
 /**
- * Holdes the data for the pet. This also take data from other schemas in the
+ * Holds the data for the pet. This also take data from other schemas in the
  * database like the trainingSchema and behaviorSchema. Properties can also change based
  * on how the user interacts with the pet.
  * @name petSchema
